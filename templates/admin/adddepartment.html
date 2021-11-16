@@ -1,0 +1,100 @@
+{% extends "admin/basead.html" %}
+{% block title %} dashboard {% endblock %}
+
+{% block content %}
+
+<div class="body">
+	<nav class="side-bar">
+			<div class="user-p">
+				<h4>Welcome : {{session["username"]}}</h4>
+			</div>
+			<ul>
+				<li>
+					<a href="/admin">
+						<i class="fa fa-home fa-fw" aria-hidden="true"></i>
+						<span>Dashboard</span>
+					</a>
+				</li>
+				<li>
+					<a href="/employee">
+						<i class="fas fa-user" aria-hidden="true"></i>
+						<span>Employee</span>
+					</a>
+				</li>
+				<li>
+					<a href="/department">
+						<i class="fa fa-comment-o" aria-hidden="true"></i>
+						<span>Department</span>
+					</a>
+				</li>
+				<li>
+					<a href="/lev">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+						<span>Leave type</span>
+					</a>
+				</li>
+
+
+				<li>
+					<a href="#">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+						<span>Leave management</span>
+					</a>
+				</li>
+				<li>
+					<a href="/chgadmpass">
+						<i class="fa fa-cog" aria-hidden="true"></i>
+						<span>Change Password</span>
+					</a>
+				</li>
+				<li>
+					<a href="/logout">
+						<i class="fa fa-power-off" aria-hidden="true"></i>
+						<span>Logout</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	    <div class="row justify-content-center mt-3 pt-2 pr-5 pl-5 pb-2">
+		   <div class="col s12">
+		    <div class="page-title" style="color:green;"><h3>Add Department</h3></div>
+		   </div>
+			<div class="container py-5 h-100">
+			<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-md-12">
+			 <div class="card w-125 p-md-4 ">
+			   <form class="row " action="{{ url_for('adddep') }}" method="POST">
+				<div class="col-md-6 mb-3">
+
+					<label for="depcode">Department Code</label>
+					<input type="text" class="form-control" id="depcode" name="depcode" placeholder="Enter Department Code">
+
+				</div>
+				<div class="col-md-6 mb-3">
+
+					<label for="depname">Department Name</label>
+					<input type="text" class="form-control" id="depname" name="depname" placeholder="Enter Department Name">
+
+				</div>
+				 <div class="col-md-6 mb-3">
+
+					<label for="depstname">Department short Name</label>
+					<input type="text" class="form-control" id="depstname" name="depstname" placeholder="Enter Department short Name">
+
+				</div>
+
+				<div class="col-md-12 mt-3">
+				<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			  </form>
+			 </div>
+			</div>
+			</div>
+			</div>
+		    </div>
+
+
+ </div>
+
+
+{% endblock %}

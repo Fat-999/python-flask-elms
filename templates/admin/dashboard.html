@@ -1,0 +1,117 @@
+{% extends "admin/basead.html" %}
+{% block title %} dashboard {% endblock %}
+
+{% block content %}
+   <div class="body">
+		<nav class="side-bar">
+			<div class="user-p">
+				<h4>Welcome : {{session["username"]}}</h4>
+			</div>
+			<ul>
+				<li>
+					<a href="/admin">
+						<i class="fa fa-home fa-fw" aria-hidden="true"></i>
+						<span>Dashboard</span>
+					</a>
+				</li>
+				<li>
+					<a href="/employee">
+						<i class="fas fa-user" aria-hidden="true"></i>
+						<span>Employees</span>
+					</a>
+				</li>
+				<li>
+					<a href="/department">
+						<i class="fa fa-building-o" aria-hidden="true"></i>
+						<span>Department</span>
+					</a>
+				</li>
+				<li>
+					<a href="/lev">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+						<span>Leave type</span>
+					</a>
+				</li>
+
+				<li>
+					<a href="#">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+						<span>Leave Management</span>
+					</a>
+				</li>
+				<li>
+					<a href="/chgadmpass">
+						<i class="fa fa-cog" aria-hidden="true"></i>
+						<span>Change password</span>
+					</a>
+				</li>
+				<li>
+					<a href="/logout">
+						<i class="fa fa-power-off" aria-hidden="true"></i>
+						<span>Logout</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	     <div class="container">
+			<div class="row mt-3 ml-2">
+			  <div class="col-md-6">
+				<div class="card bg-dark text-white w-500 p-3">
+				  <div class="card-body">
+					<h5 class="card-title"></h5>
+					<p class="card-text">TOTAL REGISTERED EMPLOYEE</p>
+					  {% for row in data %}
+					  <p class="card-text">{{ row }}</p>
+					  {% endfor %}
+				  </div>
+				</div>
+			  </div>
+
+			  <div class="col-md-6">
+				<div class="card bg-dark text-white w-500 p-3">
+				  <div class="card-body">
+					<h5 class="card-title"></h5>
+					<p class="card-text">TOTAL DEPARTMENTS </p>
+					  {% for row in dep %}
+					  <p class="card-text">{{row}}</p>
+					  {% endfor %}
+				  </div>
+				</div>
+			  </div>
+			 <div class="col-md-12 mt-3">
+				<table class="table table-striped" id="data" >
+					<tr>
+					  <th>S.No</th>
+					  <th>Employee name</th>
+					  <th>Leave Type</th>
+					  <th>Posting Date</th>
+					  <th>Status</th>
+					  <th>Action</th>
+					</tr>
+			      <tbody>
+                  {% for data in val %}
+					<tr>
+						<td>{{ data['lid'] }}</td>
+						<td>{{ data['empname'] }}</td>
+						<td>{{ data['levtype'] }}</td>
+						<td>{{ data['postingdate']}}</td>
+						{% if data['status']==1 %}
+						<td style="color:green;">Approved</td>
+                        {% elif data['status']==2 %}
+						<td style="color:red;">Not Approved</td>
+						{% else %}
+						<td style="color:#ff6600;">Waiting for response</td>
+						{% endif %}
+						<td>
+						 <a href="/levdetails/{{ data['lid'] }}" class="btn btn-success" >View Details</a>
+						</td>
+					</tr>
+
+				  {% endfor  %}
+			      </tbody>
+		        </table>
+		      </div>
+		 </div>
+	  </div>
+  </div>
+{% endblock %}
