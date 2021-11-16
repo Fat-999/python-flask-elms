@@ -1,0 +1,94 @@
+{% extends "baseemp.html" %}
+{% block title %} dashboard {% endblock %}
+
+{% block content %}
+
+<div class="body">
+		<nav class="side-bar">
+			<div class="user-p">
+				<h4>Welcome : {{session["empname"]}}</h4>
+			</div>
+			<ul>
+				<li>
+					<a href="/empdash">
+						<i class="fa fa-home fa-fw" aria-hidden="true"></i>
+						<span>My Profile</span>
+					</a>
+				</li>
+				<li>
+					<a href="/chgpass">
+						<i class="fas fa-user" aria-hidden="true"></i>
+						<span>Change password</span>
+					</a>
+				</li>
+				<li>
+					<a href="/applylev">
+						<i class="fa fa-comment-o" aria-hidden="true"></i>
+						<span>Leave </span>
+					</a>
+				</li>
+
+				<li>
+					<a href="/levhistory">
+						<i class="fa fa-comment-o" aria-hidden="true"></i>
+						<span>Leave History </span>
+					</a>
+				</li>
+
+				<li>
+					<a href="/logout">
+						<i class="fa fa-power-off" aria-hidden="true"></i>
+						<span>Logout</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+		<div class="row justify-content-center mt-3 pt-2 pr-5 pl-5 pb-2">
+		   <div class="col s12">
+		    <div class="page-title" style="color:green;"><h3>Apply for leave</h3></div>
+		   </div>
+			<div class="container py-5 h-100">
+			<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-md-12">
+			 <div class="card w-125 p-md-4 ">
+			   <form class="row " action="{{ url_for('applylev') }}" method="POST">
+				<div class="col-md-6 mb-3">
+
+					<label for="fdate"> From date </label>
+					<input type="text" class="form-control" id="fdate" name="fdate" placeholder="">
+
+				</div>
+				<div class="col-md-6 mb-3">
+
+					<label for="tdate">To date </label>
+					<input type="text" class="form-control" id="tdate" name="tdate" placeholder="">
+
+				</div>
+				 <div class="col-md-6 mb-3">
+
+					<label for="ltype">Leave type</label>
+					 <select class="form-control" name="ltype" id="ltype" autocomplete="off">
+					<option value="">Leave type</option>
+					{% for row in leave %}
+					<option value="{{ row.0 }}">{{ row.0 }}</option>
+                    {% endfor  %}
+					</select>
+				 </div>
+
+				 <div class="col-md-6 mb-3">
+
+					<label for="description">Description</label>
+					<input type="text" class="form-control" id="description" name="description" placeholder="">
+
+				</div>
+				<div class="col-md-6 mt-2">
+				  <button type="submit" class="btn btn-primary">Apply</button>
+				</div>
+			  </form>
+			 </div>
+			</div>
+			</div>
+			</div>
+		    </div>
+</div>
+{% endblock %}

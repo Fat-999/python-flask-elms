@@ -1,0 +1,95 @@
+{% extends "baseemp.html" %}
+{% block title %} dashboard {% endblock %}
+
+{% block content %}
+
+<div class="body">
+		<nav class="side-bar">
+			<div class="user-p">
+				<h4>Welcome : {{session["empname"]}}</h4>
+			</div>
+			<ul>
+				<li>
+					<a href="/empdash">
+						<i class="fa fa-home fa-fw" aria-hidden="true"></i>
+						<span>My Profile</span>
+					</a>
+				</li>
+				<li>
+					<a href="/chgpass">
+						<i class="fas fa-user" aria-hidden="true"></i>
+						<span>Change password</span>
+					</a>
+				</li>
+				<li>
+					<a href="/applylev">
+						<i class="fa fa-comment-o" aria-hidden="true"></i>
+						<span>Leave </span>
+					</a>
+				</li>
+				<li>
+					<a href="/levhistory">
+						<i class="fa fa-comment-o" aria-hidden="true"></i>
+						<span>Leave History </span>
+					</a>
+				</li>
+
+				<li>
+					<a href="/logout">
+						<i class="fa fa-power-off" aria-hidden="true"></i>
+						<span>Logout</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+        <div class="container">
+         <div class="row">
+         <div class="col md-12 mt-5 mb-3">
+           <h2>Leave History</h2>
+
+			<table class="table table-striped mt-3" id="data">
+				<tr>
+				  <th>SI.No</th>
+				  <th>Type.Of.Leave</th>
+				  <th>From</th>
+				  <th>To</th>
+				  <th>Description</th>
+				  <th>Postingdate</th>
+				  <th>Remark</th>
+				  <th>Approval Status</th>
+				</tr>
+
+			<tbody>
+
+              {% for data in details %}
+				<tr>
+					<td>{{ data ['id'] }}</td>
+                    <td>{{ data ['levtype'] }}</td>
+                    <td>{{ data ['fromdate'] }}</td>
+                    <td>{{ data ['todate'] }}</td>
+                    <td>{{ data ['description'] }}</td>
+					<td>{{ data ['postingdate'] }}</td>
+					{% if data['mgremark']==None %}
+					<td style="color:orange; width=120;">Waiting for response</td>
+					{% else %}
+					<td style="color:green; width=120;">{{ data['mgremark'] }} </td>
+					{% endif %}
+					{% if data['mgstatus']==1 %}
+					<td style="color:green; width=120;">Approved</td>
+                    {% elif data['mgstatus']==2 %}
+					<td style="color:red; width=120;">Not Approved</td>
+					{% else %}
+					<td style="color:orange;">Waiting for response</td>
+					{% endif %}
+					<td>
+
+                </tr>
+              {% endfor  %}
+			</tbody>
+			</table>
+			</div>
+		 </div>
+		</div>
+
+</div>
+{% endblock %}

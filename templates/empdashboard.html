@@ -1,0 +1,104 @@
+{% extends "baseemp.html" %}
+{% block title %} dashboard {% endblock %}
+
+{% block content %}
+
+<div class="body">
+		<nav class="side-bar">
+			<div class="user-p">
+				<h4>Welcome : {{session["empname"]}}</h4>
+			</div>
+			<ul>
+				<li>
+					<a href="/empdash">
+						<i class="fa fa-home fa-fw" aria-hidden="true"></i>
+						<span>My Profile</span>
+					</a>
+				</li>
+				<li>
+					<a href="/chgpass">
+						<i class="fas fa-user" aria-hidden="true"></i>
+						<span>Change password</span>
+					</a>
+				</li>
+				<li>
+					<a href="/applylev">
+						<i class="fa fa-comment-o" aria-hidden="true"></i>
+						<span>Leave </span>
+					</a>
+				</li>
+				<li>
+					<a href="/levhistory">
+						<i class="fa fa-comment-o" aria-hidden="true"></i>
+						<span>Leave History </span>
+					</a>
+				</li>
+
+				<li>
+					<a href="/logout">
+						<i class="fa fa-power-off" aria-hidden="true"></i>
+						<span>Logout</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+		<div class="row justify-content-center mt-3 pt-2 pr-5 pl-5 pb-2">
+		   <div class="col s12">
+		    <div class="page-title" style="color:green;"><h3>Employee details</h3></div>
+		   </div>
+			<div class="container py-5 h-100">
+			<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-md-12">
+			 <div class="card w-125 p-md-4 ">
+			   <form class="row " action="" method="POST">
+				<div class="col-md-6 mb-3">
+
+					<label for="empname"> Employee name </label>
+					<input type="text" class="form-control" id="empname" name="empname" value="{{ session['empname'] }}" readonly>
+
+				</div>
+				<div class="col-md-6 mb-3">
+
+					<label for="empid">Employee ID</label>
+					<input type="text" class="form-control"  id="empid" name="empid" value="{{ session['empid'] }}" readonly>
+
+				</div>
+
+				 <div class="col-md-6 mb-3">
+
+					<label for="email">Email Address</label>
+					<input type="email" class="form-control" id="email" name="email" value="{{ session['email'] }}" readonly>
+
+				</div>
+				 <div class="col-md-6 mb-3">
+
+					<label for="contact">Mobile Number</label>
+					<input type="text" class="form-control" id="contact" name="contact" value="{{ session['contact'] }}" readonly>
+
+				</div>
+				<div class="col-md-4 mb-3">
+
+					<label for="dep">Department</label>
+					<input type="text" class="form-control" id="dep" name="dep" value="{{ session['dep'] }}" readonly>
+
+				</div>
+				<div class="col-md-4 mb-3">
+
+					<label for="gender">Gender</label>
+					<input type="text" class="form-control" id="gender" name="gender" value="{{ session['gender'] }}" readonly>
+
+				</div>
+				<div class="col-md-4 mb-3">
+
+					<label for="birthdate">Birthdate</label>
+					<input type="text" class="form-control" id="birthdate" name="birthdate" value="{{ session['birthdate'] }}" readonly>
+				</div>
+
+			  </form>
+			 </div>
+			</div>
+			</div>
+			</div>
+		    </div>
+</div>
+{% endblock %}
