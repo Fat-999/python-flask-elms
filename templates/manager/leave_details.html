@@ -1,0 +1,237 @@
+{% extends "Manager/basemg.html" %}
+{% block title %} dashboard {% endblock %}
+
+{% block content %}
+
+<div class="body">
+	<nav class="side-bar">
+			<div class="user-p">
+				<h4>Welcome : {{session["mgusername"]}}</h4>
+			</div>
+			<ul>
+				<li>
+					<a href="/mgdashboard">
+						<i class="fa fa-home fa-fw" aria-hidden="true"></i>
+						<span>Dashboard</span>
+					</a>
+				</li>
+				<li>
+					<a href="/employee">
+						<i class="fas fa-user" aria-hidden="true"></i>
+						<span>Employee</span>
+					</a>
+				</li>
+				<li>
+					<a href="/department">
+						<i class="fa fa-comment-o" aria-hidden="true"></i>
+						<span>Department</span>
+					</a>
+				</li>
+				<li>
+					<a href="/lev">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+						<span>Leave type</span>
+					</a>
+				</li>
+
+				<li>
+					<a href="#">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+						<span>Leave management</span>
+					</a>
+				</li>
+				<li>
+					<a href="/chgadmpass">
+						<i class="fa fa-cog" aria-hidden="true"></i>
+						<span>Change password</span>
+					</a>
+				</li>
+				<li>
+					<a href="/logout">
+						<i class="fa fa-power-off" aria-hidden="true"></i>
+						<span>Logout</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+		<div class="row justify-content-center mt-3 pt-2 pr-5 pl-5 pb-2">
+		   <div class="col s12">
+		    <div class="page-title" style="color:green;"><h3>Leave Details</h3></div>
+		   </div>
+			<div class="container py-5 h-100">
+			<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-md-12">
+			 <div class="card w-125 p-md-4 ">
+			{% for data in data %}
+			   <form class="row" action="" method="POST">
+				<div class="col-md-4 mb-3">
+
+					<label> Emp name: </label>
+					<input type="text" class="form-control" value="{{ data['empname'] }}" readonly>
+
+				</div>
+				<div class="col-md-4 mb-3">
+
+					<label>Emp ID:</label>
+					<input type="text" class="form-control" value="{{ data['empid'] }}" readonly>
+
+				</div>
+				 <div class="col-md-4 mb-3">
+
+					<label>Emp Email Address:</label>
+					<input type="text" class="form-control" value="{{ data['email'] }}" readonly>
+
+				</div>
+				 <div class="col-md-4 mb-3">
+
+					<label>Emp Mobile Number:</label>
+					<input type="text" class="form-control" value="{{ data['contact'] }}" readonly>
+
+				</div>
+				<div class="col-md-4 mb-3 ">
+
+					<label>Leave Type:</label>
+					<input type="text" class="form-control" value="{{ data['levtype'] }}" readonly>
+
+				</div>
+				<div class="col-md-4 mb-3">
+
+					<label>Leave Date: </label>
+					<input type="text" class="form-control" value="{{ data['fromdate'] }} to {{ data['todate'] }}" readonly>
+
+				</div>
+
+				   <div class="col-md-4 mb-3">
+
+					<label>Posting Date:</label>
+					<input type="text" class="form-control" value="{{ data['postingdate'] }}" readonly>
+
+				</div>
+
+				<div class="col-md-4 mb-3">
+
+					<label>Emp Leave Description: </label>
+					<input type="text" class="form-control" value="{{ data['description'] }}" readonly>
+
+				</div>
+
+				 <div class="col-md-4 mb-3">
+
+					<label> TL Approval Status: </label>
+					 {% if data['status']==1 %}
+					<input type="text" class="form-control" style="color:green;" value="Approved" readonly>
+					 {% elif data['status']==2 %}
+					<input type="text" class="form-control" style="color:Red;" value="Not Approved" readonly>
+                     {% else %}
+					<input type="text" class="form-control" style="color:#ff6600;" value="Waiting for Approval" readonly>
+					 {% endif %}
+				</div>
+
+				<div class="col-md-4 mb-3">
+					<label>TL Remark: </label>
+					{% if data['tlremark']==None %}
+					<input type="text" class="form-control" style="color:#ff6600;" value="Waiting for Approval" readonly>
+					{% else %}
+					<input type="text" class="form-control" value="{{ data['tlremark'] }}" readonly>
+					{% endif %}
+				</div>
+
+				 <div class="col-md-4 mb-3">
+
+					<label>TL Action Taken Date: </label>
+					 {% if data['tlremarkdate']==None %}
+					<input type="text" class="form-control" value="NA" readonly>
+                     {% else %}
+					<input type="text" class="form-control" value="{{ data['tlremarkdate'] }}" readonly>
+					 {% endif %}
+				</div>
+
+				    <div class="col-md-4 mb-3">
+					<label> Manager Approval Status: </label>
+					 {% if data['mgstatus']==1 %}
+					<input type="text" class="form-control" style="color:green;" value="Approved" readonly>
+					 {% elif data['mgstatus']==2 %}
+					<input type="text" class="form-control" style="color:Red;" value="Not Approved" readonly>
+                     {% else %}
+					<input type="text" class="form-control" style="color:#ff6600;" value="Waiting for Approval" readonly>
+					 {% endif %}
+				</div>
+
+				<div class="col-md-4 mb-3">
+					<label>Manager Remark: </label>
+					{% if data['mgremark']==None %}
+					<input type="text" class="form-control" style="color:#ff6600;" value="Waiting for Approval" readonly>
+					{% else %}
+					<input type="text" class="form-control" value="{{ data['mgremark'] }}" readonly>
+					{% endif %}
+				</div>
+
+				 <div class="col-md-4 mb-3">
+
+					<label>Manager Action Taken Date: </label>
+					 {% if data['mgremarkdate']==None %}
+					<input type="text" class="form-control" value="NA" readonly>
+                     {% else %}
+					<input type="text" class="form-control" value="{{ data['mgremarkdate'] }}" readonly>
+					 {% endif %}
+				</div>
+
+
+			  </form>
+             {% if data['status']==1 %}
+			 {% if data['mgstatus']==0 %}
+			  <div class="col-md-12">
+				<a href="/mgtakeaction/{{ data['lid'] }}" class="btn btn-success" data-toggle="modal" data-target="#modaledit{{ data['lid'] }}">Take Action</a>
+			  </div>
+			  <div id="modaledit{{ data['lid'] }}" class="modal fade" role="dialog">
+
+				   <div class="modal-dialog">
+					  <div class="modal-content">
+						 <div class="modal-header">
+							  <button type="button" class="close" data-dismiss="modal"></button>
+							  <h4 class="modal-title" style="text-align:left;">Leave Take Action</h4>
+						 </div>
+					  <div class="modal-body">
+							<form action="/mgtakeaction/{{ data['lid'] }}" method="POST">
+								<div class="form-group">
+								<label for="status">Option: </label>
+								<select class="form-control" name="status" id="status" autocomplete="off">
+								<option selected>Choose your option</option>
+								<option value="1">Approved</option>
+								<option value="2">Not Approved</option>
+								</select>
+							   </div>
+
+							   <div class="form-group">
+								   <label for="description"> Description: </label>
+					               <input type="text" class="form-control" id="description" name="description" autocomplete="off">
+							   </div>
+
+							   <div class="form-group">
+								  <button type="submit" class="btn btn-primary">Submit</button>
+							   </div>
+							</form>
+					  </div>
+
+
+					 <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					 </div>
+               </div>
+              </div>
+			  </div>
+              {% endif %}
+              {% endif %}
+
+			{% endfor  %}
+			 </div>
+
+			</div>
+			</div>
+			</div>
+		    </div>
+
+</div>
+
+
+{% endblock %}
