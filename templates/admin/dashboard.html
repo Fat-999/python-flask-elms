@@ -78,39 +78,6 @@
 				  </div>
 				</div>
 			  </div>
-			 <div class="col-md-12 mt-3">
-				<table class="table table-striped" id="data" >
-					<tr>
-					  <th>S.No</th>
-					  <th>Employee name</th>
-					  <th>Leave Type</th>
-					  <th>Posting Date</th>
-					  <th>Status</th>
-					  <th>Action</th>
-					</tr>
-			      <tbody>
-                  {% for data in val %}
-					<tr>
-						<td>{{ data['lid'] }}</td>
-						<td>{{ data['empname'] }}</td>
-						<td>{{ data['levtype'] }}</td>
-						<td>{{ data['postingdate']}}</td>
-						{% if data['status']==1 %}
-						<td style="color:green;">Approved</td>
-                        {% elif data['status']==2 %}
-						<td style="color:red;">Not Approved</td>
-						{% else %}
-						<td style="color:#ff6600;">Waiting for response</td>
-						{% endif %}
-						<td>
-						 <a href="/levdetails/{{ data['lid'] }}" class="btn btn-success" >View Details</a>
-						</td>
-					</tr>
-
-				  {% endfor  %}
-			      </tbody>
-		        </table>
-		      </div>
 		 </div>
 	  </div>
   </div>
