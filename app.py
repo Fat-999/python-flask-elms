@@ -34,48 +34,10 @@ def admin():
         cur.execute("SELECT COUNT(*) FROM department")
         dep = cur.fetchone()
         cur.close()
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("select applyleaves.id as lid, employee.empname, employee.empId, employee.id, applyleaves.levtype, applyleaves.postingdate, applyleaves.status from applyleaves join employee on applyleaves.empid=employee.id order by lid desc limit 6")
-        val = cur.fetchall()
-        count = 1
-        cur.close()
-        return render_template('admin/dashboard.html', data=num, count=count, dep=dep, val=val, username=session['username'])
+        return render_template('admin/dashboard.html', data=num,  dep=dep, username=session['username'])
       return redirect(url_for('login'))
 
 
-@app.route('/levdetails/<string:id>')
-def levdetails(id):
-    if 'loggedad' in session:
-        isRead = 1
-        cursor = mysql.connection.cursor()
-        sql = "UPDATE applyleaves SET isread=%s WHERE id=%s"
-        data = (isRead, id)
-        cursor.execute(sql, data)
-        mysql.connection.commit()
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("select applyleaves.id as lid, employee.empname, employee.empid, employee.id, employee.gender, employee.contact, employee.email, applyleaves.levtype, applyleaves.todate, applyleaves.fromdate, applyleaves.description, applyleaves.postingdate, applyleaves.status, applyleaves.tlremark, applyleaves.tlremarkdate from applyleaves join employee on applyleaves.empid=employee.id where applyleaves.id=%s", (id,))
-        val = cur.fetchall()
-        cur.close()
-        return render_template('TL/leave_details.html', data=val, username=session['tlusername'])
-    return redirect(url_for('login'))
-
-
-@app.route('/takeaction/<string:lid>', methods=['POST', 'GET'])
-def takeaction(lid):
-    if 'loggedad' in session:
-        if request.method == 'POST':
-            status = request.form['status']
-            description = request.form['description']
-            now = datetime.now()
-            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-            cursor = mysql.connection.cursor()
-            sql = "UPDATE applyleaves SET status=%s, tlremarkdate=%s, tlremark=%s WHERE id=%s"
-            data = (status, formatted_date, description, lid)
-            cursor.execute(sql, data)
-            mysql.connection.commit()
-            flash("Data Updated Successfully")
-            return render_template('admin/takeaction.html', username=session['tlusername'])
-    return redirect(url_for('login'))
 
 
 @app.route('/employee')
@@ -398,8 +360,8 @@ def delete(id_data):
     return redirect(url_for('manageemp'))
 
 
-
 #Employee System:
+
 @app.route('/empdash')
 def empdash():
     if 'loggedad' in session:
@@ -476,7 +438,20 @@ def levhistory():
         cur.execute("SELECT fromdate,id,empid,todate,levtype,description,postingdate,mgremark,mgremarkdate,mgstatus FROM applyleaves WHERE empid=%s", (session['id'],))
         val = cur.fetchall()
         cur.close()
-        return render_template("levhistory.html", details=val, empname=session['empname'], id=session['id'])
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("SELECT count(levtype) AS X FROM applyleaves where levtype = 'Sick Leave' and empid=%s;", (session['id'],))
+        lev1 = cur.fetchone()
+        #x=lev1["count(levtype)"]
+        #y=6-x
+        #print(lev1)
+        cur.execute("SELECT count(levtype)  FROM applyleaves where levtype = 'Casual leave' and empid=%s;", (session['id'],))
+        lev2 = cur.fetchone()
+        #print(lev2)
+        cur.execute("SELECT count(levtype)  FROM applyleaves where levtype = 'Other Leave' and empid=%s;",(session['id'],))
+        lev3 = cur.fetchone()
+        #print(lev3)
+        cur.close()
+        return render_template("levhistory.html", details=val, d1=lev1, d2=lev2, d3=lev3, empname=session['empname'], id=session['id'])
     return redirect(url_for('login_emp'))
 
 
@@ -566,13 +541,59 @@ def tldashboard():
         dep = cur.fetchone()
         cur.close()
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("select applyleaves.id as lid, employee.empname, employee.empId, employee.dep, employee.id, applyleaves.levtype, applyleaves.postingdate, applyleaves.status from applyleaves join employee on applyleaves.empid=employee.id where employee.dep='IT' order by lid desc limit 10")
+        cur.execute("select applyleaves.id as lid, employee.empname, employee.empId, employee.dep, employee.id, applyleaves.levtype, applyleaves.postingdate, applyleaves.status from applyleaves join employee on applyleaves.empid=employee.id  order by lid desc limit 10")
         val = cur.fetchall()
         count = 1
+        cur.execute("SELECT count(isread)  FROM applyleaves where isread = '0';")
+        a = cur.fetchone()
+        #print(a)
         cur.close()
-        return render_template('TL/tldashboard.html', data=num, count=count, dep=dep, val=val,
-                               username=session['tlusername'])
+        return render_template('TL/tldashboard.html', data=num, count=count, icon=a, dep=dep, val=val, username=session['tlusername'])
     return redirect(url_for('tllogin'))
+
+
+@app.route('/levdetails/<string:id>')
+def levdetails(id):
+    if 'loggedad' in session:
+        isRead = 1
+        cursor = mysql.connection.cursor()
+        sql = "UPDATE applyleaves SET isread=%s WHERE id=%s"
+        data = (isRead, id)
+        cursor.execute(sql, data)
+        mysql.connection.commit()
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("select applyleaves.id as lid, employee.empname, employee.empid, employee.id, employee.gender, employee.contact, employee.email, applyleaves.levtype, applyleaves.todate, applyleaves.fromdate, applyleaves.description, applyleaves.postingdate, applyleaves.status, applyleaves.tlremark, applyleaves.tlremarkdate from applyleaves join employee on applyleaves.empid=employee.id where applyleaves.id=%s", (id,))
+        val = cur.fetchall()
+        cur.execute("SELECT count(isread)  FROM applyleaves where isread = '0';")
+        a = cur.fetchone()
+        #print(a)
+        cur.close()
+        return render_template('TL/leave_details.html', data=val, icon=a, username=session['tlusername'])
+    return redirect(url_for('tllogin'))
+
+
+@app.route('/takeaction/<string:lid>', methods=['POST', 'GET'])
+def takeaction(lid):
+    if 'loggedad' in session:
+        if request.method == 'POST':
+            status = request.form['status']
+            description = request.form['description']
+            now = datetime.now()
+            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+            cursor = mysql.connection.cursor()
+            sql = "UPDATE applyleaves SET status=%s, tlremarkdate=%s, tlremark=%s WHERE id=%s"
+            data = (status, formatted_date, description, lid)
+            cursor.execute(sql, data)
+            mysql.connection.commit()
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute("SELECT count(isread)  FROM applyleaves where isread = '0';")
+            a = cur.fetchone()
+            # print(a)
+            cur.close()
+            flash("Data Updated Successfully")
+            return render_template('TL/tldashboard.html', icon=a, username=session['tlusername'])
+    return redirect(url_for('tllogin'))
+
 
 
 # http://localhost:5000/python/logout - this will be the logout page
@@ -623,8 +644,11 @@ def mgdashboard():
         cur.execute("select applyleaves.id as lid, employee.empname, employee.empId, employee.dep, employee.id, applyleaves.levtype, applyleaves.postingdate, applyleaves.status,applyleaves.mgstatus from applyleaves join employee on applyleaves.empid=employee.id order by lid desc limit 10")
         val = cur.fetchall()
         count = 1
+        cur.execute("SELECT count(isreadmg)  FROM applyleaves where isreadmg = '0';")
+        b = cur.fetchone()
+        #print(b)
         cur.close()
-        return render_template("manager/mgdashboard.html", data=num, count=count, dep=dep, val=val,
+        return render_template("manager/mgdashboard.html", data=num, icon=b, count=count, dep=dep, val=val,
                                username=session['mgusername'])
     return redirect(url_for('mglogin'))
 
@@ -641,8 +665,10 @@ def levdetailsmg(id):
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute("select applyleaves.id as lid, employee.empname, employee.empid, employee.id, employee.gender, employee.contact, employee.email, applyleaves.levtype, applyleaves.todate, applyleaves.fromdate, applyleaves.description, applyleaves.postingdate, applyleaves.status, applyleaves.tlremark, applyleaves.tlremarkdate, applyleaves.mgstatus, applyleaves.mgremark, applyleaves.mgremarkdate from applyleaves join employee on applyleaves.empid=employee.id where applyleaves.id=%s", (id,))
         val = cur.fetchall()
+        cur.execute("SELECT count(isreadmg)  FROM applyleaves where isreadmg = '0';")
+        b = cur.fetchone()
         cur.close()
-        return render_template('Manager/leave_details.html', data=val, username=session['mgusername'])
+        return render_template('Manager/leave_details.html', data=val, icon=b, username=session['mgusername'])
     return redirect(url_for('login'))
 
 
@@ -659,9 +685,13 @@ def mgtakeaction(lid):
             data = (status, formatted_date, description, lid)
             cursor.execute(sql, data)
             mysql.connection.commit()
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute("SELECT count(isreadmg)  FROM applyleaves where isreadmg = '0';")
+            b = cur.fetchone()
+            cur.close()
             flash("Data Updated Successfully")
-            return render_template('admin/takeaction.html', username=session['mgusername'])
-    return redirect(url_for('login'))
+            return render_template('manager/mgdashboard.html', icon=b, username=session['mgusername'])
+    return redirect(url_for('mglogin'))
 
 
 # http://localhost:5000/python/logout - this will be the logout page
@@ -673,3 +703,7 @@ def logout():
 
 
 app.run(debug=True)
+
+"""
+SELECT COUNT(levtype) FROM applyleaves WHERE levtype="Sick Leave" AND empid=4
+"""
