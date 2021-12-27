@@ -37,7 +37,9 @@
        </div>
        <button type="button" class="icon-button justify-content-center">
         <span class="material-icons ">notifications</span>
-        <span class="icon-button__badge">2</span>
+        {% for c,e in icon.items() %}
+        <span class="icon-button__badge">{{ e }}</span>
+        {% endfor %}
        </button>
 
    </nav>
