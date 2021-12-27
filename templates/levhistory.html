@@ -45,8 +45,21 @@
         <div class="container">
          <div class="row">
          <div class="col md-12 mt-5 mb-3">
-           <h2>Leave History</h2>
-
+           <h2 style="margin-bottom:30px">Leave History</h2>
+			 <div class="container">
+             <div class="row">
+			   <h4 style="margin-right:30px;color:red;">Total no. of Leaves: 12</h4>
+                {% for x,y in d1.items() %}
+				<h4 style="margin-right:30px;color:blue;">No.of Sick Leaves: {{ y }} </h4>
+				 {% endfor %}
+                {% for x,y in d2.items() %}
+				<h4 style="margin-right:30px;color:blue;">No.of Casual Leaves: {{ y }}</h4>
+				 {% endfor %}
+				 {% for x,y in d3.items() %}
+				<h4 style="margin-right:2px;color:blue;">No.of Other  Leaves: {{ y }}</h4>
+				 {% endfor %}
+			 </div>
+			 </div>
 			<table class="table table-striped mt-3" id="data">
 				<tr>
 				  <th>SI.No</th>
