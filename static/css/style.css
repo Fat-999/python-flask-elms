@@ -140,5 +140,15 @@ nav ul .feat-show.show{
 	display: none;
 }
 
+h1{
+padding-top:30px;
+text-align:center;
+color:red;
+}
 
+h2{
+padding-top:30px;
+text-align:center;
+
+}
 
