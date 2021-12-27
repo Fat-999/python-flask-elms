@@ -145,25 +145,25 @@
 					<input type="text" class="form-control" value="{{ data['tlremarkdate'] }}" readonly>
 					 {% endif %}
 				</div>
-
-				    <div class="col-md-4 mb-3">
+				 <div class="col-md-4 mb-3">
 					<label> Manager Approval Status: </label>
 					 {% if data['mgstatus']==1 %}
 					<input type="text" class="form-control" style="color:green;" value="Approved" readonly>
 					 {% elif data['mgstatus']==2 %}
 					<input type="text" class="form-control" style="color:Red;" value="Not Approved" readonly>
                      {% else %}
-					<input type="text" class="form-control" style="color:#ff6600;" value="Waiting for Approval" readonly>
-					 {% endif %}
+					 <input type="text" class="form-control" style="color:#ff6600;" value="Waiting for Approval" readonly>
+					{% endif %}
 				</div>
 
 				<div class="col-md-4 mb-3">
 					<label>Manager Remark: </label>
 					{% if data['mgremark']==None %}
 					<input type="text" class="form-control" style="color:#ff6600;" value="Waiting for Approval" readonly>
-					{% else %}
+					{% else  %}
 					<input type="text" class="form-control" value="{{ data['mgremark'] }}" readonly>
 					{% endif %}
+
 				</div>
 
 				 <div class="col-md-4 mb-3">
@@ -178,7 +178,7 @@
 
 
 			  </form>
-             {% if data['status']==1 %}
+             {% if data['status']==1 or data['status']==2 %}
 			 {% if data['mgstatus']==0 %}
 			  <div class="col-md-12">
 				<a href="/mgtakeaction/{{ data['lid'] }}" class="btn btn-success" data-toggle="modal" data-target="#modaledit{{ data['lid'] }}">Take Action</a>
@@ -235,3 +235,5 @@
 
 
 {% endblock %}
+
+
